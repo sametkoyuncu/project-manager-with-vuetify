@@ -28,9 +28,9 @@
           <span class="font-weight-light">Pro</span>
           <span>Man</span>
         </v-list-item-title>
-        <v-btn icon flat color="white" @click="drawer = !drawer">
+        <!-- <v-btn icon flat color="white" @click="drawer = !drawer">
           <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
+        </v-btn> -->
       </v-list-item>
       <v-list>
         <v-list-item-group>
@@ -39,7 +39,6 @@
             :key="key"
             router
             :to="link.route"
-            @click="drawer = !drawer"
           >
             <v-list-item-icon>
               <v-icon class="white--text">{{ link.icon }}</v-icon>
@@ -60,7 +59,7 @@
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       links: [
         { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/' },
         { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
