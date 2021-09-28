@@ -1,26 +1,6 @@
 <template>
   <nav>
-    <v-toolbar flat app color="white">
-      <v-app-bar-nav-icon
-        class="grey--text"
-        @click="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title class="text-uppercase grey--text">
-        <span class="font-weight-light">Pro</span>
-        <span>Man</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon flat color="grey">
-        <v-icon>mdi-location-exit</v-icon>
-      </v-btn>
-    </v-toolbar>
-
-    <v-navigation-drawer
-      app
-      clipped
-      v-model="drawer"
-      class="deep-purple lighten-1"
-    >
+    <v-navigation-drawer app v-model="drawer" class="deep-purple lighten-1">
       <v-list-item class="mt-3">
         <v-list-item-title
           class="text-h6 white--text text-center text-uppercase"
@@ -52,6 +32,19 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+
+    <v-app-bar flat app color="white">
+      <v-app-bar-nav-icon class="grey--text" @click="drawer = !drawer">
+      </v-app-bar-nav-icon>
+      <v-toolbar-title class="text-uppercase grey--text">
+        <span class="font-weight-light">Pro</span>
+        <span>Man</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon flat color="grey">
+        <v-icon>mdi-location-exit</v-icon>
+      </v-btn>
+    </v-app-bar>
   </nav>
 </template>
 
