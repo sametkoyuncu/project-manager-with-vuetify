@@ -1,13 +1,14 @@
 <template>
   <div class="projects">
-    <h1 class="body-1 grey--text">Projects</h1>
+    <h1 class="body-1 grey--text my-3">Projects</h1>
     <v-container class="my-3">
-      <v-layout row class="mx-1 text-right">
+      <v-layout row class="mx-1">
+        <v-spacer></v-spacer>
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               depressed
-              color="indigo"
+              color="deep-purple lighten-2"
               class="mb-5"
               dark
               small
@@ -45,11 +46,11 @@
             </v-flex>
             <v-flex xs2 sm4 md2>
               <!-- <div class="caption grey--text">Durum</div> -->
-              <div class="float-right my-2">
+              <div class="my-1 text-center">
                 <v-chip
-                  small
                   :color="`${getChipColor(project.status)}`"
-                  class="white--text"
+                  class="white--text justify-center"
+                  style="min-width: 110px !important"
                   >{{ getProjectStatus(project.status) }}
                 </v-chip>
               </div>
@@ -116,9 +117,9 @@ export default {
   },
   methods: {
     getChipColor(color) {
-      if (color == 'complete') return 'green accent-4'
-      else if (color == 'ongoing') return 'orange accent-3'
-      else if (color == 'overdue') return 'red accent-3'
+      if (color == 'complete') return 'green accent-3'
+      else if (color == 'ongoing') return 'orange accent-2'
+      else if (color == 'overdue') return 'red accent-2'
     },
     getProjectStatus(status) {
       if (status == 'complete') return 'Tamamlandı'
@@ -134,26 +135,14 @@ export default {
 
 <style>
 .project.complete {
-  border-left: 5px solid #00c853;
+  border-left: 5px solid #00e676;
 }
 
 .project.ongoing {
-  border-left: 5px solid #ff9100;
+  border-left: 5px solid #ffab40;
 }
 
 .project.overdue {
-  border-left: 5px solid #ff1744;
-}
-
-.v-chip.complete {
-  background: #3cd1c2;
-}
-
-.v-chip.ongoing {
-  background: orange;
-}
-
-.v-chip.overdue {
-  background: tomato;
+  border-left: 5px solid #ff5252;
 }
 </style>
