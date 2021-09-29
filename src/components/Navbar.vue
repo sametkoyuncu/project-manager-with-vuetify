@@ -12,6 +12,16 @@
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn> -->
       </v-list-item>
+      <v-layout column class="text-center">
+        <v-flex class="mt-5">
+          <v-avatar size="100">
+            <img src="/img/teams/5.jpg" />
+          </v-avatar>
+          <p class="white--text subheading-1 text-weight-bold mt-2">
+            Samet Koyuncu
+          </p>
+        </v-flex>
+      </v-layout>
       <v-list>
         <v-list-item-group>
           <v-list-item
