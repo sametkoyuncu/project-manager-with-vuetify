@@ -2,7 +2,33 @@
   <div class="projects">
     <h1 class="body-1 grey--text">Projects</h1>
     <v-container class="my-3">
-      <div v-for="(project, key) in projects" :key="key">
+      <v-layout row class="mx-1 text-right">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              depressed
+              color="indigo"
+              class="mb-5"
+              dark
+              small
+              v-bind="attrs"
+              v-on="on"
+            >
+              Sırala
+              <v-icon right small>mdi-sort</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, index) in items" :key="index" link>
+              <v-list-item-title @click="sortBy(item.prop)">{{
+                item.title
+              }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-layout>
+
+      <div v-for="(project, index) in projects" :key="index">
         <v-card flat class="pa-3">
           <v-layout row wrap :class="`pa-3 project ${project.status}`">
             <v-flex xs12 md6>
@@ -18,8 +44,15 @@
               <div>{{ project.due }}</div>
             </v-flex>
             <v-flex xs2 sm4 md2>
-              <div class="caption grey--text">Durum</div>
-              <div>{{ project.status }}</div>
+              <!-- <div class="caption grey--text">Durum</div> -->
+              <div class="float-right my-2">
+                <v-chip
+                  small
+                  :color="`${getChipColor(project.status)}`"
+                  class="white--text"
+                  >{{ getProjectStatus(project.status) }}
+                </v-chip>
+              </div>
             </v-flex>
           </v-layout>
         </v-card>
@@ -68,21 +101,53 @@ export default {
             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
         },
       ],
+      items: [
+        { title: 'Sort by Title', prop: 'title' },
+        { title: 'Sort by Person', prop: 'person' },
+        { title: 'Sort by Due Date', prop: 'due' },
+      ],
     }
+  },
+  methods: {
+    getChipColor(color) {
+      if (color == 'complete') return 'green accent-4'
+      else if (color == 'ongoing') return 'orange accent-3'
+      else if (color == 'overdue') return 'red accent-3'
+    },
+    getProjectStatus(status) {
+      if (status == 'complete') return 'Tamamlandı'
+      else if (status == 'ongoing') return 'Devam Ediyor'
+      else if (status == 'overdue') return 'Gecikmiş'
+    },
+    sortBy(prop) {
+      this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+    },
   },
 }
 </script>
 
 <style>
 .project.complete {
-  border-left: 5px solid #3cd1c2;
+  border-left: 5px solid #00c853;
 }
 
 .project.ongoing {
-  border-left: 5px solid orange;
+  border-left: 5px solid #ff9100;
 }
 
 .project.overdue {
-  border-left: 5px solid tomato;
+  border-left: 5px solid #ff1744;
+}
+
+.v-chip.complete {
+  background: #3cd1c2;
+}
+
+.v-chip.ongoing {
+  background: orange;
+}
+
+.v-chip.overdue {
+  background: tomato;
 }
 </style>
