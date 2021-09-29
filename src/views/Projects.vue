@@ -102,9 +102,15 @@ export default {
         },
       ],
       items: [
-        { title: 'Sort by Title', prop: 'title' },
-        { title: 'Sort by Person', prop: 'person' },
-        { title: 'Sort by Due Date', prop: 'due' },
+        { title: 'Başlığa göre', prop: 'title' },
+        {
+          title: 'Kullanıcıya göre',
+          prop: 'person',
+        },
+        {
+          title: 'Bitiş tarihine göre',
+          prop: 'due',
+        },
       ],
     }
   },
