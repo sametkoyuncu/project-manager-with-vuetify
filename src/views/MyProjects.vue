@@ -1,6 +1,6 @@
 <template>
-  <div class="projects">
-    <h1 class="body-1 grey--text my-3 ml-4">Tüm Projeler</h1>
+  <div class="myProjects">
+    <h1 class="body-1 grey--text my-3 ml-4">Projelerim</h1>
     <v-container class="my-3">
       <v-layout row class="mx-1">
         <v-spacer></v-spacer>
@@ -29,43 +29,39 @@
         </v-menu>
       </v-layout>
 
-      <div v-for="(project, index) in projects" :key="index">
-        <v-card flat class="pa-3">
-          <v-layout row wrap :class="`pa-3 project ${project.status}`">
-            <v-flex xs12 md6>
-              <div class="caption grey--text">Proje Başlığı</div>
-              <div>{{ project.title }}</div>
-            </v-flex>
-            <v-flex xs6 sm4 md2>
-              <div class="caption grey--text">Oluşturan</div>
-              <div>{{ project.person }}</div>
-            </v-flex>
-            <v-flex xs6 sm4 md2>
-              <div class="caption grey--text">Bitiş Tarihi</div>
-              <div>{{ project.due }}</div>
-            </v-flex>
-            <v-flex xs2 sm4 md2>
-              <!-- <div class="caption grey--text">Durum</div> -->
-              <div class="my-1 text-center">
-                <v-chip
-                  :color="`${getChipColor(project.status)}`"
-                  class="white--text justify-center"
-                  style="min-width: 110px !important"
-                  >{{ getProjectStatus(project.status) }}
-                </v-chip>
-              </div>
-            </v-flex>
-          </v-layout>
-        </v-card>
-        <v-divider></v-divider>
-      </div>
+      <v-expansion-panels flat>
+        <v-expansion-panel
+          v-for="(project, index) in myProjects"
+          :key="index"
+          :class="`project ${project.status}`"
+        >
+          <v-expansion-panel-header>
+            {{ project.title }}
+            <v-spacer></v-spacer>
+            <v-chip
+              small
+              :color="`${getChipColor(project.status)}`"
+              class="white--text justify-center"
+              style="max-width: 111px !important; min-width: 110px !important"
+              >{{ getProjectStatus(project.status) }}
+            </v-chip>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content class="pb-2">
+            <div class="caption grey--text">Bitiş Tarihi</div>
+            <div>{{ project.due }}</div>
+            <div class="caption grey--text mt-2">İçerik</div>
+            {{ project.content }}
+          </v-expansion-panel-content>
+          <v-divider></v-divider>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-container>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'projects',
+  name: 'myProjects',
   data() {
     return {
       projects: [
@@ -105,10 +101,6 @@ export default {
       items: [
         { title: 'Başlığa göre', prop: 'title' },
         {
-          title: 'Kullanıcıya göre',
-          prop: 'person',
-        },
-        {
           title: 'Bitiş tarihine göre',
           prop: 'due',
         },
@@ -128,6 +120,13 @@ export default {
     },
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+    },
+  },
+  computed: {
+    myProjects() {
+      return this.projects.filter((project) => {
+        return project.person === 'Samet Koyuncu'
+      })
     },
   },
 }

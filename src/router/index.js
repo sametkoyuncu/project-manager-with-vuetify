@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Projects from '../views/Projects.vue'
+import MyProjects from '../views/MyProjects.vue'
 import Team from '../views/Team.vue'
 
 Vue.use(VueRouter)
@@ -16,6 +17,11 @@ const routes = [
     path: '/projects',
     name: 'projects',
     component: Projects,
+  },
+  {
+    path: '/my-projects',
+    name: 'myProjects',
+    component: MyProjects,
   },
   {
     path: '/team',

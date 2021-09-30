@@ -64,9 +64,14 @@ export default {
     return {
       drawer: true,
       links: [
-        { icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/' },
-        { icon: 'mdi-folder', text: 'My Projects', route: '/projects' },
-        { icon: 'mdi-account-group', text: 'Team', route: '/team' },
+        { icon: 'mdi-view-dashboard', text: 'Anasayfa', route: '/' },
+        { icon: 'mdi-folder-home', text: 'Tüm Projeler', route: '/projects' },
+        {
+          icon: 'mdi-folder-heart',
+          text: 'Projelerim',
+          route: '/my-projects',
+        },
+        { icon: 'mdi-account-group', text: 'Takım', route: '/team' },
       ],
     }
   },

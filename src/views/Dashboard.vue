@@ -1,6 +1,6 @@
 <template>
   <div class="projects">
-    <h1 class="body-1 grey--text">Dashboard</h1>
+    <h1 class="body-1 grey--text ml-4">Genel Bakış</h1>
     <v-container class="my-3"> content </v-container>
   </div>
 </template>

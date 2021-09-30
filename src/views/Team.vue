@@ -1,6 +1,6 @@
 <template>
   <div class="projects">
-    <h1 class="body-1 grey--text my-3">Team</h1>
+    <h1 class="body-1 grey--text my-3 ml-4">Takım</h1>
     <v-container class="my-3">
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="(person, index) in team" :key="index">
