@@ -4,6 +4,20 @@
     <v-container class="my-3">
       <v-layout row class="mx-1">
         <v-spacer></v-spacer>
+        <v-btn-toggle
+          v-model="toggle"
+          dense
+          class="mr-2"
+          style="max-height: 20px !important"
+        >
+          <v-btn small color="deep-purple lighten-2" :disabled="toggle === 0">
+            <v-icon class="white--text">mdi-view-agenda</v-icon>
+          </v-btn>
+
+          <v-btn small color="deep-purple lighten-2" :disabled="toggle === 1">
+            <v-icon class="white--text">mdi-view-grid</v-icon>
+          </v-btn>
+        </v-btn-toggle>
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -29,8 +43,12 @@
         </v-menu>
       </v-layout>
 
-      <div v-for="(project, index) in projects" :key="index">
-        <v-card flat class="pa-3">
+      <div
+        v-show="toggle == 0"
+        v-for="(project, index) in projects"
+        :key="index"
+      >
+        <v-card flat class="pa-3 mb-2">
           <v-layout row wrap :class="`pa-3 project ${project.status}`">
             <v-flex xs12 md6>
               <div class="caption grey--text">Proje Başlığı</div>
@@ -57,7 +75,52 @@
             </v-flex>
           </v-layout>
         </v-card>
-        <v-divider></v-divider>
+      </div>
+
+      <!-- $$$$ -->
+      <div v-show="toggle == 1">
+        <v-layout row wrap>
+          <v-flex
+            xs12
+            sm6
+            md4
+            lg3
+            v-for="(project, index) in projects"
+            :key="index"
+          >
+            <v-card
+              flat
+              class="ma-2"
+              min-height="250px"
+              :class="`project ${project.status}`"
+            >
+              <v-card-title>
+                <div class="caption grey--text">Proje Başlığı</div>
+                <div>{{ project.title }}</div>
+              </v-card-title>
+              <v-card-text>
+                <div class="caption grey--text">Açıklama</div>
+                <div class="body-1">
+                  {{ project.content }}
+                </div>
+                <div class="text-center mt-2">
+                  <v-chip
+                    small
+                    :color="`${getChipColor(project.status)}`"
+                    class="white--text justify-center"
+                    style="min-width: 110px !important"
+                    >{{ getProjectStatus(project.status) }}
+                  </v-chip>
+                </div>
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <div class="caption grey--text">
+                  Bitiş Tarihi: {{ project.due }}
+                </div>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </div>
     </v-container>
   </div>
@@ -68,6 +131,7 @@ export default {
   name: 'projects',
   data() {
     return {
+      toggle: 0,
       projects: [
         {
           title: 'Vuetify ile uygulama geliştir.',
