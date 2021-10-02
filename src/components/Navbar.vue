@@ -83,10 +83,9 @@ export default {
   data() {
     return {
       drawer: true,
-      snackbar: true,
+      snackbar: false,
       links: [
         { icon: 'mdi-view-dashboard', text: 'Anasayfa', route: '/' },
-        { icon: 'mdi-folder-home', text: 'Tüm Projeler', route: '/projects' },
         {
           icon: 'mdi-folder-heart',
           text: 'Projelerim',
