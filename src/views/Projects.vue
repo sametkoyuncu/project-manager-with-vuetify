@@ -43,11 +43,7 @@
         </v-menu>
       </v-layout>
 
-      <div
-        v-show="toggle == 0"
-        v-for="(project, index) in projects"
-        :key="index"
-      >
+      <div v-show="toggle == 0" v-for="project in projects" :key="project.id">
         <v-card flat class="pa-3 mb-2">
           <v-layout row wrap :class="`pa-3 project ${project.status}`">
             <v-flex xs12 md6>
@@ -161,16 +157,31 @@ export default {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
     },
   },
-  mounted: function () {
-    console.log('func')
-    db.collection('projects')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.projects.push(doc.data())
-        })
+  created() {
+    //firestore real time listener
+    db.collection('projects').onSnapshot((res) => {
+      const changes = res.docChanges()
+
+      changes.forEach((change) => {
+        if (change.type === 'added') {
+          this.projects.push({
+            ...change.doc.data(),
+            id: change.doc.id,
+          })
+        }
       })
+    })
   },
+  // mounted: function () {
+  //   console.log('func')
+  //   db.collection('projects')
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         this.projects.push(doc.data())
+  //       })
+  //     })
+  // },
 }
 </script>
 

@@ -31,8 +31,8 @@
 
       <v-expansion-panels flat>
         <v-expansion-panel
-          v-for="(project, index) in myProjects"
-          :key="index"
+          v-for="project in myProjects"
+          :key="project.id"
           :class="`project ${project.status}`"
         >
           <v-expansion-panel-header>
@@ -60,44 +60,13 @@
 </template>
 
 <script>
+import db from '@/fb'
+
 export default {
   name: 'myProjects',
   data() {
     return {
-      projects: [
-        {
-          title: 'Vuetify ile uygulama geliştir.',
-          person: 'Samet Koyuncu',
-          due: '25 Ekim 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Node.js ile rest api.',
-          person: 'Büşra Sarıkamış',
-          due: '10 Ekim 2021',
-          status: 'complete',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Firebase ile yetkilendirme.',
-          person: 'Mert Kayacık',
-          due: '28 Eylül 2021',
-          status: 'overdue',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Veritabanını MongoDB ye taşı.',
-          person: 'Samet Koyuncu',
-          due: '1 Kasım 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-      ],
+      projects: [],
       items: [
         { title: 'Başlığa göre', prop: 'title' },
         {
@@ -128,6 +97,21 @@ export default {
         return project.person === 'Samet Koyuncu'
       })
     },
+  },
+  created() {
+    //firestore real time listener
+    db.collection('projects').onSnapshot((res) => {
+      const changes = res.docChanges()
+
+      changes.forEach((change) => {
+        if (change.type === 'added') {
+          this.projects.push({
+            ...change.doc.data(),
+            id: change.doc.id,
+          })
+        }
+      })
+    })
   },
 }
 </script>
