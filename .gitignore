@@ -2,6 +2,7 @@
 node_modules
 /dist
 /src/.env
+/src/fb.js
 
 
 # local env files

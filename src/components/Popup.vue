@@ -84,6 +84,7 @@
 <script>
 import { format, parseISO } from 'date-fns'
 import { tr } from 'date-fns/locale'
+import db from '@/fb'
 
 export default {
   data: () => ({
@@ -107,15 +108,27 @@ export default {
     },
   }),
   methods: {
-    resetForm() {
-      Object.keys(this.form).forEach((f) => {
-        this.$refs[f].reset()
-      })
-    },
     submit() {
       if (this.$refs.form.validate()) {
         this.dialog = false
-        console.log(this.title + ' ' + this.content + ' ' + this.dueDate)
+        // console.log(this.title + ' ' + this.content + ' ' + this.dueDate)
+
+        const project = {
+          title: this.title,
+          person: 'Samet Koyuncu',
+          status: 'ongoing',
+          due: this.dueDate,
+          content: this.content,
+        }
+
+        db.collection('projects')
+          .add(project)
+          .then((docRef) => {
+            console.log('Document written with ID: ', docRef.id)
+          })
+          .catch((error) => {
+            console.error('Error adding document: ', error)
+          })
         this.$refs.form.reset()
       }
     },
