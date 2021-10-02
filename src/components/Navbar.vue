@@ -1,5 +1,20 @@
 <template>
   <nav>
+    <v-snackbar
+      top
+      elevation="0"
+      v-model="snackbar"
+      :timeout="4000"
+      color="green accent-3"
+    >
+      <span>Yeni proje eklendi.</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
+
     <v-navigation-drawer app v-model="drawer" class="deep-purple lighten-1">
       <v-list-item class="mt-3">
         <v-list-item-title
@@ -22,7 +37,7 @@
           </p>
         </v-flex>
         <v-flex class="mt-3 mb-3">
-          <Popup />
+          <Popup @projectAdded="snackbar = true" />
         </v-flex>
       </v-layout>
       <v-list>
@@ -68,6 +83,7 @@ export default {
   data() {
     return {
       drawer: true,
+      snackbar: true,
       links: [
         { icon: 'mdi-view-dashboard', text: 'Anasayfa', route: '/' },
         { icon: 'mdi-folder-home', text: 'Tüm Projeler', route: '/projects' },

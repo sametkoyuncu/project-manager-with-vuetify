@@ -126,45 +126,13 @@
 </template>
 
 <script>
+import db from '@/fb'
 export default {
   name: 'projects',
   data() {
     return {
       toggle: 0,
-      projects: [
-        {
-          title: 'Vuetify ile uygulama geliştir.',
-          person: 'Samet Koyuncu',
-          due: '25 Ekim 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Node.js ile rest api.',
-          person: 'Büşra Sarıkamış',
-          due: '10 Ekim 2021',
-          status: 'complete',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Firebase ile yetkilendirme.',
-          person: 'Mert Kayacık',
-          due: '28 Eylül 2021',
-          status: 'overdue',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          title: 'Veritabanını MongoDB ye taşı.',
-          person: 'Samet Koyuncu',
-          due: '1 Kasım 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-      ],
+      projects: [],
       items: [
         { title: 'Başlığa göre', prop: 'title' },
         {
@@ -192,6 +160,16 @@ export default {
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
     },
+  },
+  mounted: function () {
+    console.log('func')
+    db.collection('projects')
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.projects.push(doc.data())
+        })
+      })
   },
 }
 </script>

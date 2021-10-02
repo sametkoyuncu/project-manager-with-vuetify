@@ -2,14 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="green accent-3"
-          depressed
-          small
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
+        <v-btn color="green accent-3" small dark v-bind="attrs" v-on="on">
           YENİ PROJE EKLE
         </v-btn>
       </template>
@@ -26,7 +19,7 @@
                     label="Başlık"
                     v-model="title"
                     prepend-icon="mdi-folder"
-                    hint="6-30 karakter uzunluğunda olmalı."
+                    hint="6-36 karakter uzunluğunda olmalı."
                     :rules="[rules.required, rules.min, rules.max]"
                   >
                   </v-text-field>
@@ -63,7 +56,7 @@
                     label="Açıklama"
                     v-model="content"
                     prepend-icon="mdi-file-edit"
-                    hint="En az 10 karakter olmalı."
+                    hint="6-36 karakter uzunluğunda olmalı."
                     :rules="[rules.required, rules.min, rules.max]"
                   >
                   </v-textarea>
@@ -74,7 +67,14 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="grey" text @click="dialog = false"> Kapat </v-btn>
-            <v-btn color="green accent-3" dark @click="submit"> Kaydet </v-btn>
+            <v-btn
+              color="green accent-3"
+              dark
+              :loading="loading"
+              @click="submit"
+            >
+              Kaydet
+            </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -94,6 +94,7 @@ export default {
     // dueDate: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
     dueDate: '',
     menu: false,
+    loading: false,
     rules: {
       required: (value) => !!value || 'Bu alan gerekli.',
       min: (value) =>
@@ -110,7 +111,8 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.dialog = false
+        this.loading = true
+
         // console.log(this.title + ' ' + this.content + ' ' + this.dueDate)
 
         const project = {
@@ -125,11 +127,14 @@ export default {
           .add(project)
           .then((docRef) => {
             console.log('Document written with ID: ', docRef.id)
+            this.loading = false
+            this.dialog = false
+            this.$refs.form.reset()
+            this.$emit('projectAdded')
           })
           .catch((error) => {
             console.error('Error adding document: ', error)
           })
-        this.$refs.form.reset()
       }
     },
   },
