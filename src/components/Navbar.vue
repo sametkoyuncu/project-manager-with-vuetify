@@ -21,6 +21,9 @@
             Samet Koyuncu
           </p>
         </v-flex>
+        <v-flex class="mt-3 mb-3">
+          <Popup />
+        </v-flex>
       </v-layout>
       <v-list>
         <v-list-item-group>
@@ -51,7 +54,7 @@
         <span>Man</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon flat color="grey">
+      <v-btn icon color="grey">
         <v-icon>mdi-location-exit</v-icon>
       </v-btn>
     </v-app-bar>
@@ -59,7 +62,9 @@
 </template>
 
 <script>
+import Popup from './Popup'
 export default {
+  components: { Popup },
   data() {
     return {
       drawer: true,

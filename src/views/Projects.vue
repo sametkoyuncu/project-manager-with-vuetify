@@ -95,7 +95,9 @@
               :class="`project ${project.status}`"
             >
               <v-card-title>
-                <div class="caption grey--text">Proje Başlığı</div>
+                <div class="caption grey--text">
+                  Bitiş Tarihi: {{ project.due }}
+                </div>
                 <div>{{ project.title }}</div>
               </v-card-title>
               <v-card-text>
@@ -103,7 +105,9 @@
                 <div class="body-1">
                   {{ project.content }}
                 </div>
-                <div class="text-center mt-2">
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <div class="text-center mb-2">
                   <v-chip
                     small
                     :color="`${getChipColor(project.status)}`"
@@ -111,11 +115,6 @@
                     style="min-width: 110px !important"
                     >{{ getProjectStatus(project.status) }}
                   </v-chip>
-                </div>
-              </v-card-text>
-              <v-card-actions class="justify-center">
-                <div class="caption grey--text">
-                  Bitiş Tarihi: {{ project.due }}
                 </div>
               </v-card-actions>
             </v-card>
