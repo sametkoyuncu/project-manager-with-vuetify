@@ -1,5 +1,24 @@
 <template>
   <div class="projects">
+    <v-snackbar
+      top
+      elevation="0"
+      v-model="snackbarDelete"
+      :timeout="4000"
+      color="red accent-2"
+    >
+      <span>Proje silindi.</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbarDelete = false"
+        >
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
     <h1 class="body-1 grey--text ml-4">Anasayfa</h1>
     <v-container class="my-3">
       <v-layout row class="mx-1">
@@ -46,7 +65,7 @@
       <div v-show="toggle == 0" v-for="project in projects" :key="project.id">
         <v-card flat class="pa-3 mb-2">
           <v-layout row wrap :class="`pa-3 project ${project.status}`">
-            <v-flex xs12 md6>
+            <v-flex xs12 md5>
               <div class="caption grey--text">Proje Başlığı</div>
               <div>{{ project.title }}</div>
             </v-flex>
@@ -58,7 +77,7 @@
               <div class="caption grey--text">Bitiş Tarihi</div>
               <div>{{ project.due }}</div>
             </v-flex>
-            <v-flex xs2 sm4 md2>
+            <v-flex xs6 sm3 md2>
               <!-- <div class="caption grey--text">Durum</div> -->
               <div class="my-1 text-center">
                 <v-chip
@@ -68,6 +87,24 @@
                   >{{ getProjectStatus(project.status) }}
                 </v-chip>
               </div>
+            </v-flex>
+            <v-flex xs6 sm1 md1 class="text-right">
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    text
+                    small
+                    color="red accent-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="deleteProject(project.id)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+                <span>Projeyi Sil</span>
+              </v-tooltip>
             </v-flex>
           </v-layout>
         </v-card>
@@ -128,6 +165,7 @@ export default {
   data() {
     return {
       toggle: 0,
+      snackbarDelete: false,
       projects: [],
       items: [
         { title: 'Başlığa göre', prop: 'title' },
@@ -155,6 +193,15 @@ export default {
     },
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+    },
+    deleteProject(id) {
+      db.collection('projects').doc(id).delete()
+      const lastProjects = this.projects.filter((project) => {
+        return project.id !== id
+      })
+      this.projects = []
+      this.projects = lastProjects
+      this.snackbarDelete = true
     },
   },
   created() {
