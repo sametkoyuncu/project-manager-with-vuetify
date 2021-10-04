@@ -19,6 +19,20 @@
         </v-btn>
       </template>
     </v-snackbar>
+    <v-snackbar
+      top
+      elevation="0"
+      v-model="snackbarEdit"
+      :timeout="4000"
+      color="green accent-2"
+    >
+      <span>Proje düzenlendi.</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbarEdit = false">
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
     <h1 class="body-1 grey--text ml-4">Anasayfa</h1>
     <v-container class="my-3">
       <v-layout row class="mx-1">
@@ -89,6 +103,26 @@
               </div>
             </v-flex>
             <v-flex xs6 sm1 md1 class="text-right">
+              <EditProject
+                @projectUpdated="snackbarEdit = true"
+                :projectId="project.id"
+              ></EditProject>
+              <!-- <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    text
+                    small
+                    color="blue accent-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="getProjectById(project.id)"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <span>Projeyi Düzenle</span>
+              </v-tooltip> -->
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -159,11 +193,16 @@
 </template>
 
 <script>
+import EditProject from '@/components/EditProject'
 import db from '@/fb'
 export default {
   name: 'dashboard',
+  components: {
+    EditProject,
+  },
   data() {
     return {
+      edittingProject: {},
       toggle: 0,
       snackbarDelete: false,
       projects: [],
@@ -202,6 +241,27 @@ export default {
       this.projects = []
       this.projects = lastProjects
       this.snackbarDelete = true
+      this.snackbarEdit = true
+    },
+    getProjectById(id) {
+      const project = db.collection('projects').doc(id)
+      project
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.edittingProject = doc.data()
+            console.log('Document data:', this.edittingProject.person)
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!')
+          }
+        })
+        .catch((error) => {
+          console.log('Error getting document:', error)
+        })
+    },
+    updateProject(id, project) {
+      db.collection('projects').doc(id).update(project)
     },
   },
   created() {
@@ -219,16 +279,6 @@ export default {
       })
     })
   },
-  // mounted: function () {
-  //   console.log('func')
-  //   db.collection('projects')
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         this.projects.push(doc.data())
-  //       })
-  //     })
-  // },
 }
 </script>
 
