@@ -19,6 +19,20 @@
         </v-btn>
       </template>
     </v-snackbar>
+    <v-snackbar
+      top
+      elevation="0"
+      v-model="snackbarEdit"
+      :timeout="4000"
+      color="blue accent-2"
+    >
+      <span>Proje düzenlendi.</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbarEdit = false">
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
     <h1 class="body-1 grey--text my-3 ml-4">Tüm Projeler</h1>
     <v-container class="my-3">
       <v-layout row class="mx-1">
@@ -81,7 +95,7 @@
               <div class="caption grey--text">Bitiş Tarihi</div>
               <div>{{ project.due }}</div>
             </v-flex>
-            <v-flex xs2 sm3 md2>
+            <v-flex xs2 sm2 md1>
               <!-- <div class="caption grey--text">Durum</div> -->
               <div class="my-1 text-center">
                 <v-chip
@@ -91,6 +105,19 @@
                   >{{ getProjectStatus(project.status) }}
                 </v-chip>
               </div>
+            </v-flex>
+            <v-flex xs6 sm1 md1>
+              <project-edit
+                @projectUpdated="snackbarEdit = true"
+                :project="{
+                  title: project.title,
+                  person: project.person,
+                  due: project.due,
+                  status: project.status,
+                  content: project.content,
+                }"
+                class="mt-1 ml-2"
+              ></project-edit>
             </v-flex>
             <v-flex xs6 sm1 md1>
               <v-tooltip top>
@@ -164,12 +191,17 @@
 </template>
 
 <script>
+import ProjectEdit from '@/components/ProjectEdit'
 export default {
   name: 'dashboard',
+  components: {
+    ProjectEdit,
+  },
   data() {
     return {
       toggle: 0,
       snackbarDelete: false,
+      snackbarEdit: false,
       projects: [
         {
           id: 'IdOne',
