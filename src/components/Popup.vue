@@ -57,7 +57,7 @@
                     v-model="content"
                     prepend-icon="mdi-file-edit"
                     hint="6-36 karakter uzunluğunda olmalı."
-                    :rules="[rules.required, rules.min, rules.max]"
+                    :rules="[rules.required, rules.min]"
                   >
                   </v-textarea>
                 </v-col>

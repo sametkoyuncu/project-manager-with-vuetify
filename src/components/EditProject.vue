@@ -69,6 +69,16 @@
                   >
                   </v-textarea>
                 </v-col>
+                <v-col cols="12">
+                  <v-select
+                    v-model="status"
+                    :items="statuses"
+                    prepend-icon="mdi-list-status"
+                    :rules="[rules.required]"
+                    label="Proje Durumu"
+                    required
+                  ></v-select>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
@@ -98,6 +108,7 @@ export default {
   props: ['projectId'],
   data: () => ({
     edittingProject: {},
+    statuses: ['ongoing', 'complete', 'overdue'],
     dialog: false,
     id: '',
     title: '',
@@ -124,8 +135,6 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true
 
-        // console.log(this.title + ' ' + this.content + ' ' + this.dueDate)
-
         const project = {
           title: this.title,
           person: this.person,
@@ -147,19 +156,6 @@ export default {
           .catch((error) => {
             console.error('Error adding document: ', error)
           })
-
-        // db.collection('projects')
-        //   .add(project)
-        //   .then((docRef) => {
-        //     console.log('Document written with ID: ', docRef.id)
-        //     this.loading = false
-        //     this.dialog = false
-        //     this.$refs.form.reset()
-        //     this.$emit('projectAdded')
-        //   })
-        //   .catch((error) => {
-        //     console.error('Error adding document: ', error)
-        //   })
       }
     },
     getProjectById(project_id) {

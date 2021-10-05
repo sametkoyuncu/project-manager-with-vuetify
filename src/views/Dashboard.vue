@@ -24,9 +24,10 @@
       elevation="0"
       v-model="snackbarEdit"
       :timeout="4000"
-      color="green accent-2"
+      color="blue accent-2"
     >
       <span>Proje düzenlendi.</span>
+      <span v-if="snackbarEdit">{{ getProjects() }}</span>
       <template v-slot:action="{ attrs }">
         <v-btn color="white" text v-bind="attrs" @click="snackbarEdit = false">
           Kapat
@@ -91,7 +92,7 @@
               <div class="caption grey--text">Bitiş Tarihi</div>
               <div>{{ project.due }}</div>
             </v-flex>
-            <v-flex xs6 sm3 md2>
+            <v-flex xs6 sm2 md1>
               <!-- <div class="caption grey--text">Durum</div> -->
               <div class="my-1 text-center">
                 <v-chip
@@ -102,27 +103,14 @@
                 </v-chip>
               </div>
             </v-flex>
-            <v-flex xs6 sm1 md1 class="text-right">
+            <v-flex xs6 sm1 md1>
               <EditProject
                 @projectUpdated="snackbarEdit = true"
                 :projectId="project.id"
+                class="mt-1 ml-2"
               ></EditProject>
-              <!-- <v-tooltip top>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    fab
-                    text
-                    small
-                    color="blue accent-2"
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="getProjectById(project.id)"
-                  >
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <span>Projeyi Düzenle</span>
-              </v-tooltip> -->
+            </v-flex>
+            <v-flex xs6 sm1 md1>
               <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -130,6 +118,7 @@
                     text
                     small
                     color="red accent-2"
+                    class="mt-1"
                     v-bind="attrs"
                     v-on="on"
                     @click="deleteProject(project.id)"
@@ -205,6 +194,7 @@ export default {
       edittingProject: {},
       toggle: 0,
       snackbarDelete: false,
+      snackbarEdit: false,
       projects: [],
       items: [
         { title: 'Başlığa göre', prop: 'title' },
@@ -235,33 +225,27 @@ export default {
     },
     deleteProject(id) {
       db.collection('projects').doc(id).delete()
-      const lastProjects = this.projects.filter((project) => {
-        return project.id !== id
-      })
-      this.projects = []
-      this.projects = lastProjects
       this.snackbarDelete = true
-      this.snackbarEdit = true
+      this.getProjects()
     },
-    getProjectById(id) {
-      const project = db.collection('projects').doc(id)
-      project
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.edittingProject = doc.data()
-            console.log('Document data:', this.edittingProject.person)
-          } else {
-            // doc.data() will be undefined in this case
-            console.log('No such document!')
+    getProjects() {
+      db.collection('projects').onSnapshot((res) => {
+        const changes = res.docChanges()
+        this.projects = []
+        changes.forEach((change) => {
+          if (change.type === 'added') {
+            this.projects.push({
+              ...change.doc.data(),
+              id: change.doc.id,
+            })
           }
         })
-        .catch((error) => {
-          console.log('Error getting document:', error)
-        })
+        return
+      })
     },
-    updateProject(id, project) {
-      db.collection('projects').doc(id).update(project)
+    projectUpdated() {
+      this.snackbarEdit = true
+      this.getProjects()
     },
   },
   created() {
