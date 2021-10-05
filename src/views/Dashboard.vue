@@ -1,5 +1,24 @@
 <template>
   <div class="dashboard">
+    <v-snackbar
+      top
+      elevation="0"
+      v-model="snackbarDelete"
+      :timeout="4000"
+      color="red accent-2"
+    >
+      <span>Proje silindi.</span>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="white"
+          text
+          v-bind="attrs"
+          @click="snackbarDelete = false"
+        >
+          Kapat
+        </v-btn>
+      </template>
+    </v-snackbar>
     <h1 class="body-1 grey--text my-3 ml-4">Tüm Projeler</h1>
     <v-container class="my-3">
       <v-layout row class="mx-1">
@@ -50,7 +69,7 @@
       >
         <v-card flat class="pa-3 mb-2">
           <v-layout row wrap :class="`pa-3 project ${project.status}`">
-            <v-flex xs12 md6>
+            <v-flex xs12 md5>
               <div class="caption grey--text">Proje Başlığı</div>
               <div>{{ project.title }}</div>
             </v-flex>
@@ -62,7 +81,7 @@
               <div class="caption grey--text">Bitiş Tarihi</div>
               <div>{{ project.due }}</div>
             </v-flex>
-            <v-flex xs2 sm4 md2>
+            <v-flex xs2 sm3 md2>
               <!-- <div class="caption grey--text">Durum</div> -->
               <div class="my-1 text-center">
                 <v-chip
@@ -72,6 +91,25 @@
                   >{{ getProjectStatus(project.status) }}
                 </v-chip>
               </div>
+            </v-flex>
+            <v-flex xs6 sm1 md1>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    fab
+                    text
+                    small
+                    color="red accent-2"
+                    class="mt-1"
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="deleteProject(project.id)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </template>
+                <span>Projeyi Sil</span>
+              </v-tooltip>
             </v-flex>
           </v-layout>
         </v-card>
@@ -131,8 +169,10 @@ export default {
   data() {
     return {
       toggle: 0,
+      snackbarDelete: false,
       projects: [
         {
+          id: 'IdOne',
           title: 'Vuetify ile uygulama geliştir.',
           person: 'Samet Koyuncu',
           due: '25 Ekim 2021',
@@ -141,6 +181,7 @@ export default {
             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
         },
         {
+          id: 'IdTwo',
           title: 'Node.js ile rest api.',
           person: 'Büşra Sarıkamış',
           due: '10 Ekim 2021',
@@ -149,6 +190,7 @@ export default {
             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
         },
         {
+          id: 'IdThree',
           title: 'Firebase ile yetkilendirme.',
           person: 'Mert Kayacık',
           due: '28 Eylül 2021',
@@ -157,6 +199,7 @@ export default {
             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
         },
         {
+          id: 'IdFour',
           title: 'Veritabanını MongoDB ye taşı.',
           person: 'Samet Koyuncu',
           due: '1 Kasım 2021',
@@ -191,6 +234,14 @@ export default {
     },
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+    },
+    deleteProject(id) {
+      const lastProjects = this.projects.filter((project) => {
+        return project.id !== id
+      })
+      this.projects = []
+      this.projects = lastProjects
+      this.snackbarDelete = true
     },
   },
 }
