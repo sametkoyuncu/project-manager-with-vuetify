@@ -22,7 +22,7 @@
           </p>
         </v-flex>
         <v-flex class="mt-3 mb-3">
-          <Popup />
+          <project-add />
         </v-flex>
       </v-layout>
       <v-list>
@@ -62,15 +62,14 @@
 </template>
 
 <script>
-import Popup from './Popup'
+import ProjectAdd from './ProjectAdd.vue'
 export default {
-  components: { Popup },
+  components: { ProjectAdd },
   data() {
     return {
       drawer: true,
       links: [
         { icon: 'mdi-view-dashboard', text: 'Anasayfa', route: '/' },
-        { icon: 'mdi-folder-home', text: 'Tüm Projeler', route: '/projects' },
         {
           icon: 'mdi-folder-heart',
           text: 'Projelerim',
