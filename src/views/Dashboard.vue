@@ -11,11 +11,11 @@
       <template v-slot:action="{ attrs }">
         <v-btn
           color="white"
-          text
+          icon
           v-bind="attrs"
           @click="snackbarDelete = false"
         >
-          Kapat
+          <v-icon small>mdi-close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
@@ -28,8 +28,8 @@
     >
       <span>Proje düzenlendi.</span>
       <template v-slot:action="{ attrs }">
-        <v-btn color="white" text v-bind="attrs" @click="snackbarEdit = false">
-          Kapat
+        <v-btn color="white" icon v-bind="attrs" @click="snackbarEdit = false">
+          <v-icon small>mdi-close</v-icon>
         </v-btn>
       </template>
     </v-snackbar>
