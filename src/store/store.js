@@ -56,6 +56,16 @@ export const store = new Vuex.Store({
     addProject: (state, project) => {
       state.projects.push(project)
     },
+    editProject: (state, project) => {
+      state.projects[project.index] = {
+        id: project.id,
+        title: project.title,
+        person: project.person,
+        due: project.due,
+        status: project.status,
+        content: project.content,
+      }
+    },
   },
   actions: {
     sortBy: (context, prop) => {
@@ -66,6 +76,9 @@ export const store = new Vuex.Store({
     },
     addProject: (context, project) => {
       context.commit('addProject', project)
+    },
+    editProject: (context, project) => {
+      context.commit('editProject', project)
     },
   },
 })

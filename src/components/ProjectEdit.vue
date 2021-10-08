@@ -114,6 +114,7 @@ export default {
     title: '',
     content: '',
     dueDate: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
+    index: null,
     menu: false,
     loading: false,
     rules: {
@@ -130,23 +131,30 @@ export default {
     },
   }),
   methods: {
+    editProject(project) {
+      this.$store.commit('editProject', project)
+    },
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true
-        // const project = {
-        //   title: this.title,
-        //   person: this.person,
-        //   status: this.status,
-        //   due: this.dueDate,
-        //   content: this.content,
-        // }
+        const project = {
+          index: this.index,
+          title: this.title,
+          person: this.person,
+          status: this.status,
+          due: this.dueDate,
+          content: this.content,
+        }
+        this.editProject(project)
         this.loading = false
         this.dialog = false
         this.$refs.form.reset()
         this.$emit('projectUpdated')
       }
     },
-    getProjectById(project) {
+    getProjectById(index) {
+      const project = this.$store.state.projects[index]
+      this.index = index
       this.id = project.id
       this.title = project.title
       this.person = project.person

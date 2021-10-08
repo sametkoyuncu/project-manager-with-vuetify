@@ -109,13 +109,7 @@
             <v-flex xs6 sm1 md1>
               <project-edit
                 @projectUpdated="snackbarEdit = true"
-                :project="{
-                  title: project.title,
-                  person: project.person,
-                  due: project.due,
-                  status: project.status,
-                  content: project.content,
-                }"
+                :project="index"
                 class="mt-1 ml-2"
               ></project-edit>
             </v-flex>
