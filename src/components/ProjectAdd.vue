@@ -112,11 +112,23 @@ export default {
         this.$refs[f].reset()
       })
     },
+    addProject(project) {
+      this.$store.commit('addProject', project)
+    },
     submit() {
       if (this.$refs.form.validate()) {
         this.dialog = false
-        console.log(this.title + ' ' + this.content + ' ' + this.dueDate)
+        const project = {
+          id: Math.random(0, 100),
+          title: this.title,
+          person: 'Samet Koyuncu',
+          due: this.dueDate,
+          status: 'ongoing',
+          content: this.content,
+        }
+        this.addProject(project)
         this.$refs.form.reset()
+        this.snackbarAdd = true
       }
     },
   },

@@ -202,44 +202,6 @@ export default {
       toggle: 0,
       snackbarDelete: false,
       snackbarEdit: false,
-      projects: [
-        {
-          id: 'IdOne',
-          title: 'Vuetify ile uygulama geliştir.',
-          person: 'Samet Koyuncu',
-          due: '25 Ekim 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          id: 'IdTwo',
-          title: 'Node.js ile rest api.',
-          person: 'Büşra Sarıkamış',
-          due: '10 Ekim 2021',
-          status: 'complete',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          id: 'IdThree',
-          title: 'Firebase ile yetkilendirme.',
-          person: 'Mert Kayacık',
-          due: '28 Eylül 2021',
-          status: 'overdue',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-        {
-          id: 'IdFour',
-          title: 'Veritabanını MongoDB ye taşı.',
-          person: 'Samet Koyuncu',
-          due: '1 Kasım 2021',
-          status: 'ongoing',
-          content:
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, nostrum molestiae? Tempore tempora incidunt eius eveniet ratione ducimus, iure, maiores, quis assumenda numquam earum totam nisi consequatur accusantium provident aperiam?',
-        },
-      ],
       items: [
         { title: 'Başlığa göre', prop: 'title' },
         {
@@ -265,15 +227,16 @@ export default {
       else if (status == 'overdue') return 'Gecikmiş'
     },
     sortBy(prop) {
-      this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1))
+      this.$store.commit('sortBy', prop)
     },
     deleteProject(id) {
-      const lastProjects = this.projects.filter((project) => {
-        return project.id !== id
-      })
-      this.projects = []
-      this.projects = lastProjects
+      this.$store.commit('deleteProject', id)
       this.snackbarDelete = true
+    },
+  },
+  computed: {
+    projects() {
+      return this.$store.state.projects
     },
   },
 }

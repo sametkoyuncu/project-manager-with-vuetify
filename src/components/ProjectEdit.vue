@@ -107,6 +107,7 @@ export default {
     project: Object,
   },
   data: () => ({
+    status: '',
     statuses: ['ongoing', 'complete', 'overdue'],
     dialog: false,
     id: '',
