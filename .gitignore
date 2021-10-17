@@ -3,6 +3,7 @@ node_modules
 /dist
 /src/.env
 /src/fb.js
+demo.gif
 
 
 # local env files
