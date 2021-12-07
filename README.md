@@ -1,6 +1,6 @@
 # project-manager-with-vuetify
 
-![ss](https://raw.githubusercontent.com/sametkoyuncu/project-manager-with-vuetify/master/Screenshots/dashboard.png)
+![ss](https://s10.gifyu.com/images/demobcdaaf6147289a74.gif)
 
 [see more screenshots](https://github.com/sametkoyuncu/project-manager-with-vuetify/tree/master/Screenshots)
 
